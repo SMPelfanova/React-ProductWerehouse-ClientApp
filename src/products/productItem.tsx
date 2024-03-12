@@ -1,45 +1,44 @@
-import React from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 import {Product} from '../types';
+import { error } from 'console';
+import ConfirmationDialog from './confirmationDialog';
 
 interface ProductItemProps{
     product: Product;
+    onDelete: () => void;
 }
 
-const ProductItem = ({ product } : ProductItemProps) => {
-    return (
-            <tr key={product.id}>
-              <td>{product.title}</td>
-              <td>{product.price}</td>
-              <td>&nbsp;{product.sizes.map(size=> 
-                    (
-                    <span>{size.name} </span>
-                    )
-                    )
-                }</td>
-             <td>
-                <button type="button" className="btn btn-primary btn-sm">Edit</button>
-                <button type="button" className="btn btn-danger btn-sm ml-2">Delete</button>
-              </td>
-            </tr>
-          )};
+const ProductItem = ({ product, onDelete } : ProductItemProps) => {
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  
+  const deleteProduct = async(id:string) =>{
+    try{
+      await fetch("http://localhost:5068/api/products/" + id, {method: 'DELETE'});
+      onDelete();
+    }
+    catch(error){
+      console.error("Error deleting product", error);
+    }
+  } 
+  
+  return (
+    <>
+      <tr key={product.id}>
+        <td>{product.title}</td>
+        <td>{product.price}</td>
+        <td>&nbsp;{product.sizes.map(size=> 
+              (
+              <span>{size.name} </span>
+              )
+              )
+          }</td>
+        <td>
+          <button type="button" className="btn btn-primary btn-sm">Edit</button>
+          <button onClick={()=> setModalOpen(true)} type="button" className="btn btn-danger btn-sm ml-2">Delete</button>
+        </td>
+      </tr>
+      <ConfirmationDialog isOpen={isModalOpen} onClosed={() => setModalOpen(false)} onConfirm={() => deleteProduct(product.id)} />
+    </>
+    )};
 
 export default ProductItem;
-
-{/* <div className="col-lg-3 col-md-4 mb-4">
-            <div className="card">
-                <div className="card-body">
-                <h5 className="card-title">{product.name}</h5>
-                <img src="/comming-soon.png" alt="Comming soon" className="img-fluid"  />
-                <p className="card-text text-center">{product.title}</p>
-                <p className="card-text">${product.price}</p>
-                {
-                <p>&nbsp;{product.sizes.map(size=> 
-                    (
-                    <span>{size.name} </span>
-                    )
-                    )
-                }</p>
-                    }
-                </div>
-            </div>
-        </div> */}

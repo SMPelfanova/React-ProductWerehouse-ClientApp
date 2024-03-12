@@ -6,7 +6,7 @@ const AddProductForm = () => {
     const navigate = useNavigate();
 
     const [product, setProduct] = useState<Product>({
-        id:0,
+        id: '',
         title: '',
         price: 0,
         sizes: [
@@ -36,7 +36,7 @@ const AddProductForm = () => {
            if (response.ok) {
         console.log('Product added successfully!');
         setProduct({
-          id: 0,
+          id: '',
           title: '',
           price: 0,
           brand: '',

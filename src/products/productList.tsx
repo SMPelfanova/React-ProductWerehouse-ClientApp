@@ -27,30 +27,28 @@ const ProductList = () => {
 
     return (
         <div className="container pt-4">
-         <Link to="/add"><button type="button" className="btn btn-primary me-2">Add product</button></Link>
-
+            <Link to="/add"><button type="button" className="btn btn-primary me-2">Add product</button></Link>
             <div className="row">
             <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Sizes</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-            {
-                products.length === 0 ? (
-                <p>No products found</p>
-            ) : (
-                products.map(product => (
-                    <ProductItem key={product.id} product={product} />
-                ))
-            )}
-        </tbody>
-      </table>
-          
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Sizes</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {
+                        products.length === 0 ? (
+                        <p>No products found</p>
+                    ) : (
+                        products.map(product => (
+                            <ProductItem key={product.id} product={product} onDelete={fetchProducts} />
+                        ))
+                    )}
+                </tbody>
+            </table>
             </div>
         </div>
     );
