@@ -1,0 +1,59 @@
+import React, {  useState, useEffect } from 'react';
+import ProductItem from './productItem';
+import {Product} from '../types';
+import {Link} from 'react-router-dom';
+
+const ProductList = () => {
+    const [products, setProducts] = useState<Product[]>([]);
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = async () =>{
+        try{
+            const response = await fetch("http://localhost:5068/api/products");
+            if(!response.ok){
+                throw new Error('Failed to fetch products');
+            }
+            const data = await response.json();
+            const sortedProducts = data.sort((a: Product, b: Product) => a.title.localeCompare(b.title));
+            setProducts(sortedProducts);
+        }
+        catch(error){
+            console.error("Error fetching products", error);
+        }
+    }
+
+    return (
+        <div className="container pt-4">
+         <Link to="/add"><button type="button" className="btn btn-primary me-2">Add product</button></Link>
+
+            <div className="row">
+            <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Sizes</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {
+                products.length === 0 ? (
+                <p>No products found</p>
+            ) : (
+                products.map(product => (
+                    <ProductItem key={product.id} product={product} />
+                ))
+            )}
+        </tbody>
+      </table>
+          
+            </div>
+        </div>
+    );
+};
+
+export default ProductList;
