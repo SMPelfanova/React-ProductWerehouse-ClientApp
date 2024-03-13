@@ -53,22 +53,26 @@ const AddProductForm = () => {
     };
 
     return (
-    <form onSubmit={handleSubmit}>
-        <h1>Add product</h1>
-        <div>
-            <label>Name:</label>
-            <input type="text" name="title" value={product.title} onChange={handleChange} required />
+        <div className="container pt-4">
+            <div className="row">
+                <form onSubmit={handleSubmit}>
+                    <h1>Add product</h1>
+                    <div className="form-group">
+                        <label>Name:</label>
+                        <input type="text" name="title" className="form-control" value={product.title} onChange={handleChange} required />
+                    </div>
+                    <div className="form-group">
+                        <label>Price:</label>
+                        <input type="number" name="price"  className="form-control" value={product.price} onChange={handleChange} required />
+                    </div>
+                    <div className="form-group">
+                        <label>Brand:</label>
+                        <input type="text" name="brand" className="form-control"  value={product.brand} onChange={handleChange} required />
+                    </div>
+                    <button type="submit" className="btn btn-primary  mt-4">Submit</button>
+                </form>
+            </div>
         </div>
-        <div>
-            <label>Price:</label>
-            <input type="number" name="price" value={product.price} onChange={handleChange} required />
-        </div>
-        <div>
-            <label>Brand:</label>
-            <input type="text" name="brand" value={product.brand} onChange={handleChange} required />
-        </div>
-        <button type="submit">Add Product</button>
-    </form>
 )}
 
 export default AddProductForm;

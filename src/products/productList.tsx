@@ -27,8 +27,8 @@ const ProductList = () => {
 
     return (
         <div className="container pt-4">
-            <Link to="/add"><button type="button" className="btn btn-primary me-2">Add product</button></Link>
             <div className="row">
+            <Link to="/add" className="m-0 p-0"><button type="button" className="btn btn-primary">Add product</button></Link>
             <table>
                 <thead>
                 <tr>
