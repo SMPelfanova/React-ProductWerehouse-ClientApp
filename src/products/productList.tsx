@@ -32,6 +32,7 @@ const ProductList = () => {
             <table>
                 <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Title</th>
                     <th>Price</th>
                     <th>Sizes</th>
@@ -43,8 +44,8 @@ const ProductList = () => {
                         products.length === 0 ? (
                         <p>No products found</p>
                     ) : (
-                        products.map(product => (
-                            <ProductItem key={product.id} product={product} onDelete={fetchProducts} />
+                        products.map((product, index) => (
+                            <ProductItem key={product.id} index={index+1} product={product} onDelete={fetchProducts} />
                         ))
                     )}
                 </tbody>

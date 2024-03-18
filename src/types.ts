@@ -4,9 +4,18 @@ export interface Product {
     description: string;
     price: number;
     brandId: string;
-    brand: Brand;
+    brand: Brand | string;
     groups: Group[],
     sizes: Size[]
+} 
+export interface ProductDetail {
+  id?: string;
+  title: string;
+  description: string;
+  price: number;
+  brand: string;
+  groups: Group[],
+  sizes: Size[]
 } 
 
 export interface Brand {

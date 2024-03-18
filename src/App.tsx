@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './header';
 import ProductList from './products/productList';
 import ProductDetails from './products/productDetails';
-import AddProduct from './products/addProduct';
+import AddProduct from './products/addProductForm';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       <div className="App">
         <Routes>
            <Route path="/" element={<ProductList />} />
-           <Route path="/details" element={<ProductDetails />} />
+           <Route path="/product/:id" element={<ProductDetails />} />
            <Route path="/add" element={<AddProduct isEditMode={false} />} />
            <Route path="/edit/:id" element={<AddProduct isEditMode={true} />} />
         </Routes>
