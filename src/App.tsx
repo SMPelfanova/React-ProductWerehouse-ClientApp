@@ -13,7 +13,8 @@ function App() {
         <Routes>
            <Route path="/" element={<ProductList />} />
            <Route path="/details" element={<ProductDetails />} />
-           <Route path="/add" element={<AddProduct />} />
+           <Route path="/add" element={<AddProduct isEditMode={false} />} />
+           <Route path="/edit/:id" element={<AddProduct isEditMode={true} />} />
         </Routes>
       </div>
     </>

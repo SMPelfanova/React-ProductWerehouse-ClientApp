@@ -11,7 +11,7 @@ interface ProductItemProps{
 const ProductItem = ({ product, onDelete } : ProductItemProps) => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
-  const deleteProduct = async(id:string) =>{
+  const deleteProduct = async(id?:string) =>{
     try{
       await fetch("http://localhost:5068/api/products/" + id, {method: 'DELETE'});
       onDelete();
