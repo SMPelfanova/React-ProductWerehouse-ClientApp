@@ -54,7 +54,7 @@ const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
   return (
     <div className="container p-5 pt-3">
         <div className="row">
-            <form onSubmit={onSubmit} className='col-md-8 mx-auto'>
+            <form onSubmit={onSubmit} className='col-md-12'>
                 {isEditMode ? <h1>Edit product</h1> : <h1>Add product</h1>} 
                 <div className="form-group">
                     <label className="form-label">Name:</label>
@@ -102,8 +102,8 @@ const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
                   ))}
                 </div>
                 <div className='text-end'>
+                <Link to='/' className="btn btn-secondary mt-2 me-2">Cancel</Link>
                   <button type="submit" className="btn btn-primary mt-2 me-2">Submit</button>
-                  <Link to='/' className="btn btn-primary mt-2">Cancel</Link>
                 </div>
             </form>
         </div>

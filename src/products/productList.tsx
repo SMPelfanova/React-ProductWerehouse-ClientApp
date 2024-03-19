@@ -25,7 +25,9 @@ const ProductList = () => {
     }
 
     return (
+        
         <div className="container p-5 pt-3">
+             <h1 className="h3 mb-4 text-gray-800">Product List</h1>
             <div className="row">
                 <table className="table mx-auto">
                     <thead>
@@ -45,7 +47,7 @@ const ProductList = () => {
                         </tr>
                     ) : (
                         products.map((product, index) => (
-                            <ProductItem key={product.id} index={index+1} product={product} onDelete={fetchProducts} />
+                            <ProductItem key={index+1} index={index+1} product={product} onDelete={fetchProducts} />
                         ))
                     )}
                     </tbody>

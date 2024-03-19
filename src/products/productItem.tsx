@@ -20,17 +20,19 @@ const ProductItem = ({ index, product, onDelete } : ProductItemProps) => {
   
   return (
     <>
-      <tr key={product.id}>
+      <tr key={product.id} className=''>
         <td className="align-top pb-3">{index}</td>
         <td className="align-top pb-3">{product.title}</td>
         <td className="align-top pb-3">${product.price}</td>
         <td className="align-top pb-3">{product.sizes.map(size=> 
               (<div>{size.name}: {size.quantityInStock} </div>))
           }</td>
-        <td className="align-top text-end pb-3">
-          <Link to={`/product/${product.id}`} className="btn btn-primary btn-sm m-1">View</Link>
-          <Link to={`/edit/${product.id}`} className="btn btn-primary btn-sm m-1">Edit</Link>
-          <button onClick={()=> setModalOpen(true)} type="button" className="btn btn-danger btn-sm m-1">Delete</button>
+        <td className="align-top text-end text-white  pb-3">
+          <Link to={`/product/${product.id}`} className="btn btn-info text-white btn-sm m-1"><i className="fas fa-info-circle"></i>&nbsp;Info</Link>
+          <Link to={`/edit/${product.id}`} className="btn btn-warning text-white  btn-sm m-1"><i className="fas fa-edit"></i>&nbsp;Edit</Link>
+          <button onClick={()=> setModalOpen(true)} type="button" className="btn btn-danger btn-icon-split btn-sm m-1">  
+                <i className="fas fa-trash"></i>&nbsp;Delete
+           </button>
         </td>
       </tr>
       <ConfirmationDialog isOpen={isModalOpen} onClosed={() => setModalOpen(false)} onConfirm={() => onDeleteProduct(product.id)} />

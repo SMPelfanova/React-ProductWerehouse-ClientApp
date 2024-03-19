@@ -34,14 +34,7 @@ const useProductForm = (isEditMode: boolean, initialProduct?: Product) => {
             try {
                 const productDetails = await fetchProductDetails(id);
                 setProduct(productDetails);
-                const sizesData: Size[] = await fetchSizes();
-                const newSizes: Size[] = [];
-                sizesData.forEach(size => {
-                    if (!productDetails.sizes.some((existingSize: Size) => existingSize.id === size.id)) {
-                        newSizes.push(size);
-                    }
-                });
-                setSizes([...productDetails.sizes, ...newSizes]);
+                setSizes(productDetails.sizes);
             } catch (error) {
                 console.error('Error fetching product details:', error);
             }
