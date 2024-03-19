@@ -29,7 +29,8 @@ const ProductDetails = () =>{
     }
 
     return (
-        <div className="container mt-4">
+        <div className="container p-5 pt-3">
+        <Link to='/' className="go-back-link mr-2">&lt;&lt; Back</Link>
         <div className="row">
             <div className="col-md-6">
                 <img src="/comming-soon.png" className="img-fluid" onError={(e) => console.log('Image Load Error', e)} />
@@ -45,7 +46,6 @@ const ProductDetails = () =>{
                     <div>{size.name}: {size.quantityInStock} </div>
                 ))}
             </div>
-            <Link to='/' className="btn btn-primary btn-sm mr-2">Go Back</Link>
         </div>
     </div>
     );

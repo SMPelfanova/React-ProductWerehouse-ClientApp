@@ -21,19 +21,16 @@ const ProductItem = ({ index, product, onDelete } : ProductItemProps) => {
   return (
     <>
       <tr key={product.id}>
-        <td>{index}</td>
-        <td>{product.title}</td>
-        <td>{product.price}</td>
-        <td>&nbsp;{product.sizes.map(size=> 
-              (
-              <span>{size.name} </span>
-              )
-              )
+        <td className="align-top pb-3">{index}</td>
+        <td className="align-top pb-3">{product.title}</td>
+        <td className="align-top pb-3">${product.price}</td>
+        <td className="align-top pb-3">{product.sizes.map(size=> 
+              (<div>{size.name}: {size.quantityInStock} </div>))
           }</td>
-        <td>
-          <Link to={`/edit/${product.id}`} className="btn btn-primary btn-sm mr-2">Edit</Link>
-          <Link to={`/product/${product.id}`} className="btn btn-primary btn-sm mr-2">View Details</Link>
-          <button onClick={()=> setModalOpen(true)} type="button" className="btn btn-danger btn-sm ml-2 pl-2">Delete</button>
+        <td className="align-top text-end pb-3">
+          <Link to={`/product/${product.id}`} className="btn btn-primary btn-sm m-1">View</Link>
+          <Link to={`/edit/${product.id}`} className="btn btn-primary btn-sm m-1">Edit</Link>
+          <button onClick={()=> setModalOpen(true)} type="button" className="btn btn-danger btn-sm m-1">Delete</button>
         </td>
       </tr>
       <ConfirmationDialog isOpen={isModalOpen} onClosed={() => setModalOpen(false)} onConfirm={() => onDeleteProduct(product.id)} />

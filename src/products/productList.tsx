@@ -1,7 +1,6 @@
 import React, {  useState, useEffect } from 'react';
 import ProductItem from './productItem';
 import {Product} from '../types';
-import {Link} from 'react-router-dom';
 
 const ProductList = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -26,30 +25,31 @@ const ProductList = () => {
     }
 
     return (
-        <div className="container pt-4">
+        <div className="container p-5 pt-3">
             <div className="row">
-            <Link to="/add" className="m-0 p-0"><button type="button" className="btn btn-primary">Add product</button></Link>
-            <table>
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Title</th>
-                    <th>Price</th>
-                    <th>Sizes</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
+                <table className="table mx-auto">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Sizes</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {
                         products.length === 0 ? (
-                        <p>No products found</p>
+                        <tr>
+                            <td colSpan={5}>No products found</td>
+                        </tr>
                     ) : (
                         products.map((product, index) => (
                             <ProductItem key={product.id} index={index+1} product={product} onDelete={fetchProducts} />
                         ))
                     )}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
             </div>
         </div>
     );

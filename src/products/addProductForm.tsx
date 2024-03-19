@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import { Product } from '../types';
 import useProductForm from '../hooks/useProductForm';
+import {Link} from 'react-router-dom';
 
 interface AddProductFormProps{
   isEditMode:boolean;
@@ -27,6 +28,9 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ isEditMode, initialProd
     if (!product.title.trim()) {
       errors.title = 'Title is required';
     }
+    if (product.title.length > 100) {
+      errors.title = 'Maximum length is 100';
+    }
     if (product.price <= 0) {
       errors.price = 'Price must be greater than 0';
     }
@@ -44,25 +48,26 @@ const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
       handleSubmit(e);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   return (
-    <div className="container pt-4">
+    <div className="container p-5 pt-3">
         <div className="row">
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} className='col-md-8 mx-auto'>
                 {isEditMode ? <h1>Edit product</h1> : <h1>Add product</h1>} 
                 <div className="form-group">
-                    <label>Name:</label>
+                    <label className="form-label">Name:</label>
                     <input type="text" name="title" className="form-control" value={product.title} onChange={handleChange} />
                     {errors.title && <small className="text-danger">{errors.title}</small>}
                 </div>
                 <div className="form-group">
-                    <label>Price:</label>
+                    <label className="form-label">Price:</label>
                     <input type="number" name="price"  className="form-control" value={product.price} onChange={handleChange} />
                     {errors.price && <small className="text-danger">{errors.price}</small>}
                 </div>
                 <div className="form-group">
-                    <label>Brand:</label>
+                    <label className="form-label">Brand:</label>
                     <select name="brand" className="form-control" value={product.brandId || ''} onChange={e => handleBrandChange(e.target.value)}>
                       <option value="">Select...</option>
                       {
@@ -73,12 +78,12 @@ const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
                     {errors.brandId && <small className="text-danger">{errors.brandId}</small>}
                 </div>
                 <div className="form-group">
-                    <label>Description:</label>
+                    <label className="form-label">Description:</label>
                     <input type="text" name="description" className="form-control" value={product.description} onChange={handleChange} />
                     {errors.description && <small className="text-danger">{errors.description}</small>}
                 </div>
                 <div className="form-group pt-1">
-                  <label>Groups: &nbsp;</label>
+                  <label className="form-label">Groups: &nbsp;</label>
                       {groups.map(group=>(
                         <div key={group.id} className="form-check form-check-inline">
                           <input type="checkbox" className="form-check-input" id={group.id} value={group.id} checked={product.groups.some(g=>g.id === group.id)}
@@ -88,7 +93,7 @@ const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
                       ))}
                 </div>
                 <div className="form-group">
-                  <label>Sizes and Quantities:</label><br />
+                  <label className="form-label">Sizes and Quantities:</label><br />
                   {allSizes.map(size => (
                     <div key={size.id} className="form-group">
                       <label>{size.name}:</label>
@@ -96,7 +101,10 @@ const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
                     </div>
                   ))}
                 </div>
-                <button type="submit" className="btn btn-primary  mt-4">Submit</button>
+                <div className='text-end'>
+                  <button type="submit" className="btn btn-primary mt-2 me-2">Submit</button>
+                  <Link to='/' className="btn btn-primary mt-2">Cancel</Link>
+                </div>
             </form>
         </div>
     </div>
