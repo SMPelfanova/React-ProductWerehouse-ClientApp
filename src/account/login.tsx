@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import  {useNavigate} from "react-router-dom"; 
 
-const LogIn = () => {
+interface LoginProps {
+    onLogin: () => void;
+  }
+
+const LogIn : React.FC<LoginProps> = ({ onLogin }) =>{
+    const navigate = useNavigate();
     const backgroundImageUrls  = [
         'url("/images/1.jpg")',
         'url("/images/2.jpg")',
@@ -17,6 +24,25 @@ const LogIn = () => {
         backgroundSize: 'contain',
         backgroundPosition: 'center',
       };
+
+    const [user, setUser] =useState<UserData | null>(null);
+    interface UserData {
+        accessToken: string;
+        expiresIn: number;
+    }
+
+    const login = useGoogleLogin({
+        onSuccess: (tokenResponse) => {
+            const userData = {
+                accessToken: tokenResponse.access_token,
+                expiresIn: tokenResponse.expires_in,
+            };
+            setUser(userData);
+            onLogin();
+            console.log('Login Succseeded:')
+        },
+        onError: (error) => console.log('Login Failed:', error)
+    });
       
     useEffect(() => {
         const randomIndex = Math.floor(Math.random() * backgroundImageUrls.length);
@@ -54,9 +80,7 @@ const LogIn = () => {
                                             Login
                                         </a>
                                         <hr></hr>
-                                        <a href="index.html" className="btn btn-google btn-user btn-block">
-                                            <i className="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
+                                        <button onClick={(e) => {e.preventDefault();login()}}>Sign in with Google 🚀 </button>
                                         <a href="index.html" className="btn btn-facebook btn-user btn-block">
                                             <i className="fab fa-facebook-f fa-fw"></i> Login with Facebook
                                         </a>

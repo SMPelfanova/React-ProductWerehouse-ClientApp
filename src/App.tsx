@@ -1,6 +1,6 @@
 import './App.css';
 import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate} from 'react-router-dom';
 import Header from './header';
 import ProductList from './products/productList';
 import ProductDetails from './products/productDetails';
@@ -8,24 +8,37 @@ import AddProduct from './products/addProductForm';
 import NotFoundPage from './404';
 import SideBar from './sideBar';
 import TopBar from './topBar';
-import Login from './login/login';
+import Login from './account/login';
 
+import { GoogleLogin } from '@react-oauth/google';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(true); 
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    navigate('/');
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    navigate('/account/login');
+  };
 
   return (
    <>
-     { isLoggedIn ?  
+     { !isLoggedIn ?  
            <Routes >
-              <Route path="/login" element={<Login />} />
+              <Route path="/account/login" element={<Login onLogin={handleLogin} />} />
+              <Route path="*" element={<NotFoundPage />} />
           </Routes> :
           <div id="wrapper">
           <SideBar />
           <div id="content-wrapper" className="d-flex flex-column">
           <div id="content" className="App">
-          <TopBar />
+          <TopBar onLogout={handleLogout} />
           <div className="container-fluid">
             <Routes>
               <Route path="/" element={<ProductList />} />

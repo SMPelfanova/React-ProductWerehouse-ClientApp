@@ -1,4 +1,8 @@
-const topBar = () => {
+interface TopBarProps{
+    onLogout: () => void;
+}
+
+const topBar: React.FC<TopBarProps> = ({onLogout}) => {
     return (
 <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
@@ -142,6 +146,7 @@ const topBar = () => {
                 Activity Log
             </a>
             <div className="dropdown-divider"></div>
+            <button onClick={(e)=> {e.preventDefault(); onLogout()}}>Logout</button>
             <a className="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                 <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                 Logout

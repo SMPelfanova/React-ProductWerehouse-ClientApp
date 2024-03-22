@@ -48,7 +48,6 @@ const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
       handleSubmit(e);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   return (
