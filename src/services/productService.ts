@@ -1,3 +1,5 @@
+import axios from '../axiosInstance'
+
 export const fetchBrands = async () => {
     try {
         const response = await fetch('http://localhost:5068/api/brands');
@@ -63,7 +65,7 @@ export const fetchProductDetails = async (id:string) => {
 
 export const deleteProduct = async (id: string | undefined) => {
     try{
-      await fetch(`http://localhost:5068/api/products/${id}`, {method: 'DELETE'});
+        await axios.delete(`/products/${id}`);
     }
     catch(error){
       console.error("Error deleting product", error);

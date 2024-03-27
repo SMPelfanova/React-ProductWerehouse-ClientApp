@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import  {useNavigate} from "react-router-dom"; 
+import authService from '../services/authService';
+import { AuthContext } from "../context/authContext";
+import { log } from "console";
 
-interface LoginProps {
-    onLogin: () => void;
-  }
+const LogIn : React.FC = () =>{
+    const { login } = useContext(AuthContext);
 
-const LogIn : React.FC<LoginProps> = ({ onLogin }) =>{
     const navigate = useNavigate();
     const backgroundImageUrls  = [
         'url("/images/1.jpg")',
@@ -31,14 +32,13 @@ const LogIn : React.FC<LoginProps> = ({ onLogin }) =>{
         expiresIn: number;
     }
 
-    const login = useGoogleLogin({
+    const googleLogin = useGoogleLogin({
         onSuccess: (tokenResponse) => {
             const userData = {
                 accessToken: tokenResponse.access_token,
                 expiresIn: tokenResponse.expires_in,
             };
             setUser(userData);
-            onLogin();
             console.log('Login Succseeded:')
         },
         onError: (error) => console.log('Login Failed:', error)
@@ -48,6 +48,33 @@ const LogIn : React.FC<LoginProps> = ({ onLogin }) =>{
         const randomIndex = Math.floor(Math.random() * backgroundImageUrls.length);
         setCurrentBackgroundIndex(randomIndex);
       }, []); 
+
+      const [email, setEmail] = useState('');
+      const [password, setPassword] = useState('');
+    
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+         // const hashedPassword = await hashPassword(password);
+          await authService.login(email, password);
+          console.log('Login successful');
+          login();
+        } catch (error) {
+          console.error("Login failed");
+        }
+      };
+      const hashPassword = async (password: string): Promise<string> => {
+        // Convert password string to ArrayBuffer
+        const passwordBuffer = new TextEncoder().encode(password);
+        // Calculate hash (SHA-256) asynchronously
+        const hashBuffer = await window.crypto.subtle.digest('SHA-256', passwordBuffer);
+        // Convert hash ArrayBuffer to hex string
+        const hashedPassword = Array.from(new Uint8Array(hashBuffer))
+            .map((byte) => byte.toString(16).padStart(2, '0'))
+            .join('');
+        return hashedPassword;
+    };
+
 
     return(
     <div className="container">
@@ -62,12 +89,20 @@ const LogIn : React.FC<LoginProps> = ({ onLogin }) =>{
                                     <div className="text-center">
                                         <h1 className="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form className="user">
+                                    <form className="user" onSubmit={handleSubmit}>
                                         <div className="form-group">
-                                            <input type="email" className="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." />
+                                            <input type="email"
+                                             value={email}
+                                             onChange={(e) => setEmail(e.target.value)}
+                                             className="form-control form-control-user" 
+                                             id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." />
                                         </div>
                                         <div className="form-group">
-                                            <input type="password" className="form-control form-control-user" id="exampleInputPassword" placeholder="Password" />
+                                            <input type="password"
+                                             value={password}
+                                             onChange={(e) => setPassword(e.target.value)}
+                                             className="form-control form-control-user" 
+                                             id="exampleInputPassword" placeholder="Password" />
                                         </div>
                                         <div className="form-group">
                                             <div className="custom-control custom-checkbox small">
@@ -76,11 +111,11 @@ const LogIn : React.FC<LoginProps> = ({ onLogin }) =>{
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <a href="index.html" className="btn btn-primary btn-user btn-block">
+                                        <button type="submit" className="btn btn-primary btn-user btn-block">
                                             Login
-                                        </a>
+                                        </button>
                                         <hr></hr>
-                                        <button onClick={(e) => {e.preventDefault();login()}}>Sign in with Google 🚀 </button>
+                                        <button onClick={(e) => {e.preventDefault();googleLogin()}}>Sign in with Google 🚀 </button>
                                         <a href="index.html" className="btn btn-facebook btn-user btn-block">
                                             <i className="fab fa-facebook-f fa-fw"></i> Login with Facebook
                                         </a>

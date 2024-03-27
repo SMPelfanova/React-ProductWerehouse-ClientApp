@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Product, Brand, Group, Size } from '../types';
 import { fetchBrands, fetchGroups, fetchSizes, fetchProductDetails } from '../services/productService';
+import axios from '../axiosInstance';
  
 const useProductForm = (isEditMode: boolean, initialProduct?: Product) => {
     const navigate = useNavigate();
@@ -108,26 +109,13 @@ const useProductForm = (isEditMode: boolean, initialProduct?: Product) => {
         try {
             const filteredSizes = product.sizes.filter(size => size.quantityInStock > 0);
             const productToSend = { ...product, sizes: filteredSizes };
-           
             if (isEditMode) {
-                const response = await fetch(`http://localhost:5068/api/products/${product.id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(productToSend)
-                });
-                if (response.ok) {
-                    console.log('Product updated successfully!');
-                    navigate('/');
-                } else {
-                    console.error('Failed to update product:', response.statusText);
-                }
+                await axios.put(`/api/products/${product.id}`, productToSend);
+                console.log('Product updated successfully!');
+                navigate('/');
             } else {
-            const response = await fetch('http://localhost:5068/api/products', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(productToSend)
-            });
-            if (response.ok) {
+                await axios.post('/api/products', productToSend);
+                console.log('Product added successfully!');
                 setProduct({
                     title: '',
                     description: '',
@@ -138,9 +126,7 @@ const useProductForm = (isEditMode: boolean, initialProduct?: Product) => {
                     groups: []
                 });
                 navigate('/');
-            } else {
-                console.error('Failed to add product:', response.statusText);
-            }
+            
         }
         } catch (error) {
             console.error('Error:', error);

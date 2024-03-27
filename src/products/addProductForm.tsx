@@ -7,7 +7,6 @@ interface AddProductFormProps{
   isEditMode:boolean;
   initialProduct?:Product;
 }
-
 const AddProductForm: React.FC<AddProductFormProps> = ({ isEditMode, initialProduct }) => {
   const {
       product,
